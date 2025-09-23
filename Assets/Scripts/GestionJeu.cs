@@ -1,18 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; 
+
 
 public class GestionJeu : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
+    public static int score = 0;
+    public Text scoreText;
+
+    // Mise à jour du score lorsqu'on entre en collision avec un objet
     void Update()
     {
-        
+        scoreText.text = "Score : " + score;
+    }
+    
+    public static void AjoutScore(int point)
+    {
+        score += point;
     }
 }
