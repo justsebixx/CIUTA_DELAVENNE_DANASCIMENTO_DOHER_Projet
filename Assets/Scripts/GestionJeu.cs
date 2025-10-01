@@ -1,45 +1,43 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; 
-
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GestionJeu : MonoBehaviour
 {
-
-    public static int score = 0;
+    public int score = 0;
     public Text scoreText;
-    public float vitesse = 5f;
+    public float tempsRestant = 60f;
+    public Text timerText;
+
     void Update()
-    {   
-
-        scoreText.text = "Score : " + score;
-        Vector2 deplacement = Vector2.zero;
-
-        // ↑↓→← Pour se déplacer sur la map
-
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            deplacement += Vector2.up;
-        }
-        if (Input.GetKey(KeyCode.DownArrow)) 
-        {
-            deplacement += Vector2.down;
-        }
-        if (Input.GetKey(KeyCode.LeftArrow)) 
-        {
-            deplacement += Vector2.left;
-        }
-        if (Input.GetKey(KeyCode.RightArrow)) 
-        {
-            deplacement += Vector2.right;
-        }
-
-        transform.Translate(deplacement * vitesse * Time.deltaTime);
-    }
-    
-    public static void AjoutScore(int point)
     {
-        score += point;
+        if (scoreText != null)
+            scoreText.text = "Score : " + score;
+
+        // mode de jeu avec temps
+        tempsRestant -= Time.deltaTime;
+        if (tempsRestant <= 0)
+        {
+            FinDePartie();
+        }
+
+        if (timerText != null)
+            timerText.text = "Temps : " + Mathf.CeilToInt(tempsRestant);
+    }
+
+    public void AjoutScore(int points)
+    {
+        score += points;
+        if (scoreText != null)
+            scoreText.text = "Score : " + score;
+    }
+
+    public void FinDePartie()
+    {
+        Debug.Log("Fin du jeu");
+        // TODO : remplacer par la scène de "Game Over" quand elle existera
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
