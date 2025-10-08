@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿// en haut
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -11,12 +10,16 @@ public class GestionJeu : MonoBehaviour
     public float tempsRestant = 60f;
     public Text timerText;
 
+    // AJOUT:
+    [Header("Lien Game Over")]
+    public GameOver gameOverUI; 
+    private bool finDeclaree = false; 
+
     void Update()
     {
         if (scoreText != null)
             scoreText.text = "Score : " + score;
 
-        // mode de jeu avec temps
         tempsRestant -= Time.deltaTime;
         if (tempsRestant <= 0)
         {
@@ -36,8 +39,23 @@ public class GestionJeu : MonoBehaviour
 
     public void FinDePartie()
     {
+        // MODIF:
+        if (finDeclaree) return;
+        finDeclaree = true;
+
         Debug.Log("Fin du jeu");
-        // TODO : remplacer par la scène de "Game Over" quand elle existera
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        
+        if (gameOverUI != null)
+        {
+            // Etre sur que le timer n’est pas négatif
+            if (tempsRestant < 0f) tempsRestant = 0f;
+
+            gameOverUI.Show(score);
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 }
