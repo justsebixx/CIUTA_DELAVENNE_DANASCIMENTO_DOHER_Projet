@@ -1,23 +1,36 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.UI; 
+using UnityEngine.UI;
 
-
-public class GestionJeu : MonoBehaviour
+public class SnakeController : MonoBehaviour
 {
+    Vextor2 dir;
 
-    public static int score = 0;
-    public Text scoreText;
+    void Start()
+    {
+        dir = Vector2.right;
 
-    // Mise à jour du score lorsqu'on entre en collision avec un objet
+    }
+
     void Update()
     {
-        scoreText.text = "Score : " + score;
+        if (Input.GetKey(KeyCode.RightArrow))
+            dir = Vector2.right;
+        else if (Input.GetKey(KeyCode.LeftArrow))
+            dir = -Vector2.left;
+        else if (Input.GetKey(KeyCode.UpArrow))
+            dir = Vector2.up;
+        else if (Input.GetKey(KeyCode.DownArrow))
+            dir = -Vector2.down;
     }
-    
-    public static void AjoutScore(int point)
+
+    void fixedUpdate()
     {
-        score += point;
+        float x = Mathf.Round(transform.position.x) + dir.x;
+        float y = Mathf.Round(transform.position.y) + dir.y;
+
+        transform.position = new Vector2(x, y);
     }
+
 }
