@@ -12,7 +12,7 @@ public class GestionJeu : MonoBehaviour
 
     // AJOUT:
     [Header("Lien Game Over")]
-    public GameOver gameOverUI; 
+    public GameOverUI gameOverUI; 
     private bool finDeclaree = false; 
 
     void Update()
