@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://ds5rcivx18quf"]
+
+[ext_resource type="Script" uid="uid://cfdhqwpnhui3y" path="res://scripts/Main.cs" id="1_elqb8"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_elqb8")
+
+[node name="Score" type="Label" parent="."]
+offset_right = 65.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Score : 0"
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 600.0
+offset_bottom = 400.0
