@@ -7,7 +7,10 @@ public partial class Main : Node2D
 	public const int GridHeight = 20;
 	
 	private SnakeController snakeController;
-	private float timer = 0;  // ⚠️ Le timer doit être une variable de classe !
+	private FoodManager foodManager;
+	private Label scoreLabel;
+	private float timer = 0;
+	private int score = 0;
 
 	public override void _Ready()
 	{
@@ -17,48 +20,73 @@ public partial class Main : Node2D
 		bg.Color = new Color(0.1f, 0.1f, 0.15f);
 		AddChild(bg);
 		
+		// Score label
+		scoreLabel = new Label();
+		scoreLabel.Position = new Vector2(10, GridHeight * CellSize + 5);
+		scoreLabel.AddThemeFontSizeOverride("font_size", 20);
+		scoreLabel.AddThemeColorOverride("font_color", Colors.White);
+		AddChild(scoreLabel);
+		UpdateScore();
+		
 		// Initialiser le serpent
 		snakeController = new SnakeController();
 		AddChild(snakeController);
 		snakeController.Initialize(new Vector2(15, 10));
 		
-		GD.Print("🐍 Snake initialisé !");
+		// Initialiser la nourriture
+		foodManager = new FoodManager();
+		AddChild(foodManager);
+		foodManager.Initialize(snakeController.GetSnakePositions(), new System.Collections.Generic.List<Vector2>());
+		
+		GD.Print("🐍 Snake et 🍎 Food initialisés !");
 	}
 
 	public override void _Process(double delta)
 	{
-		// Gestion des inputs
 		snakeController.HandleInput();
 		
-		// Timer de mouvement
 		timer += (float)delta;
-		if (timer < 0.15f) return;  // Vitesse: bouge toutes les 0.15 secondes
-		timer = 0;  // Réinitialiser après le mouvement
+		if (timer < 0.15f) return;
+		timer = 0;
 		
-		// Déplacer le serpent
 		Vector2 newHead = snakeController.Move();
 		
-		// Vérifier collisions murs
+		// Collision mur
 		if (newHead.X < 0 || newHead.X >= GridWidth || 
 			newHead.Y < 0 || newHead.Y >= GridHeight)
 		{
-			GD.Print("💀 Game Over - Collision mur!");
+			GD.Print($"💀 Game Over - Score final: {score}");
 			GetTree().ReloadCurrentScene();
 			return;
 		}
 		
-		// Vérifier collision avec soi-même
+		// Collision soi-même
 		if (snakeController.CheckSelfCollision(newHead))
 		{
-			GD.Print("💀 Game Over - Auto-collision!");
+			GD.Print($"💀 Game Over - Score final: {score}");
 			GetTree().ReloadCurrentScene();
 			return;
 		}
 		
-		// Retirer la queue (pas de nourriture pour l'instant)
-		snakeController.RemoveTail();
+		// ✅ Utiliser CheckFoodEaten au lieu de CheckFoodCollision
+		if (foodManager.CheckFoodEaten(newHead))
+		{
+			score++;
+			UpdateScore();
+			snakeController.Grow();  // Faire grandir le serpent
+			foodManager.SpawnFood(snakeController.GetSnakePositions(), new System.Collections.Generic.List<Vector2>());
+		}
+		else
+		{
+			snakeController.RemoveTail();
+		}
 		
-		// Mettre à jour les visuels
 		snakeController.UpdateVisuals();
 	}
+
+	private void UpdateScore()
+	{
+		scoreLabel.Text = $"🍎 Score: {score}";
+	}
 }
+	
