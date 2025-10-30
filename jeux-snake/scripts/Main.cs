@@ -6,6 +6,7 @@ public partial class Main : Node2D
 	public const int GridWidth = 30;
 	public const int GridHeight = 20;
 	
+	private BackgroundManager backgroundManager;
 	private SnakeController snakeController;
 	private FoodManager foodManager;
 	private Label scoreLabel;
@@ -14,11 +15,10 @@ public partial class Main : Node2D
 
 	public override void _Ready()
 	{
-		// Fond simple
-		ColorRect bg = new ColorRect();
-		bg.Size = new Vector2(GridWidth * CellSize, GridHeight * CellSize);
-		bg.Color = new Color(0.1f, 0.1f, 0.15f);
-		AddChild(bg);
+		// Initialiser le fond
+		backgroundManager = new BackgroundManager();
+		AddChild(backgroundManager);
+		backgroundManager.Initialize();
 		
 		// Score label
 		scoreLabel = new Label();
@@ -38,7 +38,7 @@ public partial class Main : Node2D
 		AddChild(foodManager);
 		foodManager.Initialize(snakeController.GetSnakePositions(), new System.Collections.Generic.List<Vector2>());
 		
-		GD.Print("🐍 Snake et 🍎 Food initialisés !");
+		GD.Print("🎮 Jeu initialisé !");
 	}
 
 	public override void _Process(double delta)
@@ -68,12 +68,12 @@ public partial class Main : Node2D
 			return;
 		}
 		
-		// ✅ Utiliser CheckFoodEaten au lieu de CheckFoodCollision
+		// Manger nourriture
 		if (foodManager.CheckFoodEaten(newHead))
 		{
 			score++;
 			UpdateScore();
-			snakeController.Grow();  // Faire grandir le serpent
+			snakeController.Grow();
 			foodManager.SpawnFood(snakeController.GetSnakePositions(), new System.Collections.Generic.List<Vector2>());
 		}
 		else
@@ -89,4 +89,3 @@ public partial class Main : Node2D
 		scoreLabel.Text = $"🍎 Score: {score}";
 	}
 }
-	
