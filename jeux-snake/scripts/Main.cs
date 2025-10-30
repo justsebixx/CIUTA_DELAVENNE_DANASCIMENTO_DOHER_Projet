@@ -6,59 +6,59 @@ public partial class Main : Node2D
 	public const int GridWidth = 30;
 	public const int GridHeight = 20;
 	
+	private ObstacleManager obstacleManager;
+	private DeplacementManager deplacementManager;
 	private SnakeController snakeController;
-	private float timer = 0;  // ⚠️ Le timer doit être une variable de classe !
+	private float timer = 0;
 
 	public override void _Ready()
-	{
-		// Fond simple
-		ColorRect bg = new ColorRect();
-		bg.Size = new Vector2(GridWidth * CellSize, GridHeight * CellSize);
-		bg.Color = new Color(0.1f, 0.1f, 0.15f);
-		AddChild(bg);
+	{		
+		// Obstacles
+		obstacleManager = new ObstacleManager();
+		AddChild(obstacleManager);
+		obstacleManager.Initialize();
 		
-		// Initialiser le serpent
+		// Serpent
 		snakeController = new SnakeController();
 		AddChild(snakeController);
 		snakeController.Initialize(new Vector2(15, 10));
 		
-		GD.Print("🐍 Snake initialisé !");
+		// Déplacement
+		deplacementManager = new DeplacementManager();
+		AddChild(deplacementManager);
+		
+		GD.Print("🐍 Serpent lancé !");
 	}
 
 	public override void _Process(double delta)
 	{
-		// Gestion des inputs
-		snakeController.HandleInput();
+		// Input
+		deplacementManager.HandleInput();
 		
-		// Timer de mouvement
+		// Timer (vitesse du serpent)
 		timer += (float)delta;
-		if (timer < 0.15f) return;  // Vitesse: bouge toutes les 0.15 secondes
-		timer = 0;  // Réinitialiser après le mouvement
+		if (timer < 0.15f) return;
+		timer = 0;
+		
+		// Calculer nouvelle position
+		Vector2 currentHead = snakeController.GetSnakePositions()[0];
+		Vector2 newHead = deplacementManager.GetNextPosition(currentHead);
+		
+		// Collision mur = téléportation côté opposé
+		if (newHead.X < 0) newHead.X = GridWidth - 1;
+		if (newHead.X >= GridWidth) newHead.X = 0;
+		if (newHead.Y < 0) newHead.Y = GridHeight - 1;
+		if (newHead.Y >= GridHeight) newHead.Y = 0;
+		
+		// Collision obstacle = traverser
+		if (obstacleManager.CheckCollision(newHead))
+		{
+			GD.Print("🧱 Traversé un obstacle !");
+		}
 		
 		// Déplacer le serpent
-		Vector2 newHead = snakeController.Move();
-		
-		// Vérifier collisions murs
-		if (newHead.X < 0 || newHead.X >= GridWidth || 
-			newHead.Y < 0 || newHead.Y >= GridHeight)
-		{
-			GD.Print("💀 Game Over - Collision mur!");
-			GetTree().ReloadCurrentScene();
-			return;
-		}
-		
-		// Vérifier collision avec soi-même
-		if (snakeController.CheckSelfCollision(newHead))
-		{
-			GD.Print("💀 Game Over - Auto-collision!");
-			GetTree().ReloadCurrentScene();
-			return;
-		}
-		
-		// Retirer la queue (pas de nourriture pour l'instant)
+		snakeController.GetSnakePositions().Insert(0, newHead);
 		snakeController.RemoveTail();
-		
-		// Mettre à jour les visuels
 		snakeController.UpdateVisuals();
 	}
 }
