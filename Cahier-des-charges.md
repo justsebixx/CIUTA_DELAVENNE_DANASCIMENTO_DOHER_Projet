@@ -8,8 +8,11 @@
 ### Membres du projet
 
 Sebastian-Cristian Ciuta
+
 Théo Da Nascimento
+
 Baptiste Delavenne
+
 Eyma Doher
 
 ### Contexte / Origine de la demande
