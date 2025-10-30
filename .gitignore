@@ -1,2 +1,20 @@
+# ===== Godot =====
+.godot/imported/
 .godot/mono/temp/
+.godot/mono/bin/
+.godot/mono/assembly/
 .godot/shader_cache/
+.godot/editor_data/
+
+# ===== C# / Visual Studio =====
+*.csproj.user
+*.sln.DotSettings
+bin/
+obj/
+TestResults/
+
+# ===== Cache =====
+.DS_Store
+*.swp
+*.bak
+
