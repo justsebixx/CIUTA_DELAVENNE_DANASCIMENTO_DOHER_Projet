@@ -2,20 +2,17 @@ using Godot;
 using System.Collections.Generic;
 
 // Gère l'apparition, l'affichage et la détection de la nourriture.
-// Responsabilité : Logique et visuel de la nourriture (pomme).
 public partial class FoodManager : Node2D
 {
-	private Vector2 foodPos; // Position actuelle de la nourriture sur la grille
-	private ColorRect foodRect; // Représentation visuelle de la nourriture
+	private Vector2 foodPos; 
+	private ColorRect foodRect; 
 
-	// Point d'entrée - Appelé au démarrage pour placer la première nourriture
 	public void Initialize(List<Vector2> snakePositions, List<Vector2> obstaclePositions)
 	{
 		SpawnFood(snakePositions, obstaclePositions);
 	}
 
 	// Place aléatoirement la nourriture en évitant le serpent et les obstacles.
-	// Détruit l'ancienne nourriture si elle existe.
 	public void SpawnFood(List<Vector2> snakePositions, List<Vector2> obstaclePositions)
 	{
 		// Supprime l'ancienne nourriture de la scène si elle existe
@@ -31,14 +28,12 @@ public partial class FoodManager : Node2D
 			);
 			attempts++;
 			
-			// Sécurité : évite une boucle infinie si la grille est pleine
 			if (attempts > 1000)
 			{
 				GD.Print(" Impossible de placer la nourriture !");
 				return;
 			}
 		} while (snakePositions.Contains(foodPos) || obstaclePositions.Contains(foodPos));
-		// Boucle jusqu'à trouver une case libre (ni serpent, ni obstacle)
 		
 		CreateFoodVisual();
 		GD.Print($" Nourriture placée en ({foodPos.X}, {foodPos.Y})");
@@ -52,25 +47,21 @@ public partial class FoodManager : Node2D
 		return position == foodPos;
 	}
 
-	// Crée le visuel de la nourriture (style pomme brillante).
-	// 3 couches : carré rouge + aura orange + point blanc brillant
+	// Crée le visuel de la nourriture style pomme brillante.
 	private void CreateFoodVisual()
 	{
-		// Carré principal rouge (18x18 pixels)
 		foodRect = new ColorRect();
 		foodRect.Size = new Vector2(18, 18);
 		foodRect.Color = new Color(1.0f, 0.2f, 0.2f); // Rouge vif
 		foodRect.Position = foodPos * Main.CellSize + Vector2.One; // +1 pour centrer dans la case
 		AddChild(foodRect);
 		
-		// Aura lumineuse orange semi-transparente
 		ColorRect aura = new ColorRect();
 		aura.Size = new Vector2(16, 16);
 		aura.Position = new Vector2(1, 1); // Décalage pour centrer l'aura
 		aura.Color = new Color(1.0f, 0.5f, 0.3f, 0.4f);
 		foodRect.AddChild(aura);
 		
-		// Point lumineux blanc en haut à gauche (effet brillance)
 		ColorRect shine = new ColorRect();
 		shine.Size = new Vector2(4, 4);
 		shine.Position = new Vector2(3, 3);

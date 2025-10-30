@@ -2,12 +2,11 @@ using Godot;
 using System.Collections.Generic;
 
 // Gère la génération, l'affichage et la détection des obstacles.
-// Responsabilité : Créer des obstacles aléatoires en évitant la zone de spawn du serpent.
 public partial class ObstacleManager : Node2D
 {
-	private List<Vector2> obstacles = new List<Vector2>(); // Positions des obstacles sur la grille
-	private List<ColorRect> obstacleRects = new List<ColorRect>(); // Représentations visuelles des obstacles
-	private const int ObstacleCount = 30; // Nombre d'obstacles à générer
+	private List<Vector2> obstacles = new List<Vector2>(); 
+	private List<ColorRect> obstacleRects = new List<ColorRect>(); 
+	private const int ObstacleCount = 30; 
 
 	// Point d'entrée - Réinitialise et génère de nouveaux obstacles
 	public void Initialize()
@@ -18,7 +17,6 @@ public partial class ObstacleManager : Node2D
 	}
 
 	// Supprime tous les obstacles existants (données + visuels).
-	// Utilisé avant de regénérer les obstacles à chaque partie.
 	private void ClearObstacles()
 	{
 		obstacles.Clear(); // Vide la liste des positions
@@ -32,9 +30,7 @@ public partial class ObstacleManager : Node2D
 		obstacleRects.Clear();
 	}
 
-	// Génère aléatoirement les positions des obstacles en évitant :
-	// - La zone de spawn du serpent (centre de la grille)
-	// - Les bords de la grille (marge de 2 cases)
+	// Génère aléatoirement les positions des obstacles 
 	private void GenerateObstacles()
 	{
 		var random = new RandomNumberGenerator();
@@ -43,7 +39,6 @@ public partial class ObstacleManager : Node2D
 		HashSet<Vector2> usedPositions = new HashSet<Vector2>(); // Évite les doublons
 
 		// Réserve la zone centrale (5x5) pour le spawn du serpent
-		// Zone de (13,8) à (17,12) - le serpent démarre à (15,10)
 		for (int x = 13; x <= 17; x++)
 			for (int y = 8; y <= 12; y++)
 				usedPositions.Add(new Vector2(x, y));
@@ -52,7 +47,6 @@ public partial class ObstacleManager : Node2D
 		while (obstacles.Count < ObstacleCount)
 		{
 			// Position aléatoire avec marge de 2 cases des bords
-			// Ex: si GridWidth=30, x sera entre 2 et 27
 			int x = random.RandiRange(2, Main.GridWidth - 3);
 			int y = random.RandiRange(2, Main.GridHeight - 3);
 			Vector2 pos = new Vector2(x, y);
