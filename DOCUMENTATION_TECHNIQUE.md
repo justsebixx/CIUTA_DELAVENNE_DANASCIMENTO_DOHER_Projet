@@ -30,7 +30,7 @@ Documenter l'architecture technique, le gameplay et les bonnes pratiques de dév
   └── GameOverScreen.cs          # Interface utilisateur
 /scenes
   ├── Main.tscn                  # Scène principale
-  └── game_over_screen.tscn
+  └── game_over_screen.tscn      # Scène fin de jeu
 ```
 
 ---
@@ -59,8 +59,8 @@ Documenter l'architecture technique, le gameplay et les bonnes pratiques de dév
 
 ### A. Classes principales
 
-**Main.cs - Orchestrateur**
-- Boucle de jeu (_Process 60 FPS)
+**Main.cs - Controlleur**
+- Boucle de jeu
 - Détection collisions (murs, obstacles, auto-collision)
 - Gestion score et accélération
 - Coordination des 5 managers
@@ -76,8 +76,7 @@ Documenter l'architecture technique, le gameplay et les bonnes pratiques de dév
 
 **FoodManager.cs**
 - Génération position aléatoire (évite serpent/obstacles)
-- Détection consommation
-- Visuel 3 couches (rouge + aura orange + point blanc)
+- Détection consommation d'une pomme
 
 **ObstacleManager.cs**
 - Génération 30 obstacles
@@ -114,9 +113,6 @@ Documenter l'architecture technique, le gameplay et les bonnes pratiques de dév
 
 ### A. Performances
 - Framerate stable 60 FPS
-- Recyclage ColorRect (pas de création/destruction constante)
-- HashSet pour génération obstacles (évite doublons)
-- Collision murs : O(1), obstacles/serpent : O(n) avec n petit
 
 ### B. Bonnes pratiques
 - **Architecture par composants** : Un Manager par fonctionnalité
@@ -149,8 +145,7 @@ Documenter l'architecture technique, le gameplay et les bonnes pratiques de dév
 
 ### A. Tests unitaires (MSTest)
 - Projet `JeuxSnake.Tests`
-- Tests : scoring, collisions, génération aléatoire
-- Couverture : > 70%
+- Tests : scoring, collisions, etc...
 
 ### B. Tests fonctionnels
 - Mouvements 4 directions
