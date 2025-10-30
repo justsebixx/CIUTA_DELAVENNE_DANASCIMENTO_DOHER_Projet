@@ -5,7 +5,7 @@ public partial class ObstacleManager : Node2D
 {
 	private List<Vector2> obstacles = new List<Vector2>();
 	private List<ColorRect> obstacleRects = new List<ColorRect>();
-	private const int ObstacleCount = 15;
+	private const int ObstacleCount = 30;
 
 	public void Initialize()
 	{
