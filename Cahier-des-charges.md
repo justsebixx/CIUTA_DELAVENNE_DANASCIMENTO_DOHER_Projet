@@ -3,7 +3,14 @@
 ## 1. Présentation générale
 
 ### Titre du projet
-**Projet Snake**
+**Jeu Snake**
+
+### Membres du projet
+
+Sebastian-Cristian Ciuta
+Théo Da Nascimento
+Baptiste Delavenne
+Eyma Doher
 
 ### Contexte / Origine de la demande
 Cours de qualité de développement
@@ -74,7 +81,7 @@ Non applicable
 ## 5. Contraintes organisationnelles
 
 ### Planning prévisionnel
-**Dernier délai** : 31 octobre 23h59
+**Dernier délai** : 31 octobre 2025 avant 23h59
 
 ### Budget estimé
 Pas de budget
