@@ -18,3 +18,4 @@ TestResults/
 *.swp
 *.bak
 
+.godot/

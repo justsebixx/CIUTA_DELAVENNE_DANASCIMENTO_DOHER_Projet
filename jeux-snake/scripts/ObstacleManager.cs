@@ -59,7 +59,7 @@ public partial class ObstacleManager : Node2D
 			ColorRect rect = new ColorRect();
 			rect.Size = new Vector2(Main.CellSize - 2, Main.CellSize - 2);
 			rect.Position = obs * Main.CellSize + Vector2.One;
-			rect.Color = new Color(0.4f, 0.2f, 0.1f);
+			rect.Color = new Color(1f, 1f, 1f);
 			AddChild(rect);
 			obstacleRects.Add(rect);
 		}
