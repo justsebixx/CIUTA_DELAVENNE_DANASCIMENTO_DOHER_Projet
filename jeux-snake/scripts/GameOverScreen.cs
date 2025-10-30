@@ -31,12 +31,12 @@ public partial class UIManager : Node2D
 	{
 		ColorRect overlay = new ColorRect();
 		overlay.Size = new Vector2(600, 450);
-		overlay.Color = new Color(0, 0, 0, 0.85f); // 85% d'opacité
+		overlay.Color = new Color(0, 0, 0, 0.85f); 
 		AddChild(overlay);
 		
 		ColorRect panel = new ColorRect();
 		panel.Size = new Vector2(400, 300);
-		panel.Position = new Vector2(100, 75); // Centré horizontalement
+		panel.Position = new Vector2(100, 75); 
 		panel.Color = new Color(0.1f, 0.1f, 0.15f);
 		AddChild(panel);
 		
